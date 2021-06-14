@@ -1,0 +1,108 @@
+<html>
+
+<head>
+    <title>Raed, Write, Update, Delete </title>
+</head>
+
+<body>
+
+    Name : <input id="namebox" type="text"></input><br><br> Roll No : <input id="rollbox" type="text"></input><br><br> Sec : <input id="secbox" type="text"></input><br><br> Gender : <input id="genbox" type="text"></input><br><br>
+
+    <br><br>
+
+    <button id="insert">INSERT</button>
+    <button id="select">SELECT</button>
+    <button id="update">UPDATE</button>
+    <button id="delete">DELETE</button>
+
+    <!-- <script src="https://www.gstatic.com/firebasejs/7.15.5/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/7.15.5/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/7.15.5/firebase-database.js"></script> -->
+
+    <script src="https://www.gstatic.com/firebasejs/8.6.3/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.6.3/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.6.3/firebase-database.js"></script>
+
+
+    <script id="MainScript">
+        // Your web app's Firebase configuration
+        var firebaseConfig = {
+            apiKey: "AIzaSyDFVgFLnz3CnBWrY0F3tANV3oX6wtzzHlg",
+            authDomain: "fir-javascripts.firebaseapp.com",
+            projectId: "fir-javascripts",
+            storageBucket: "fir-javascripts.appspot.com",
+            messagingSenderId: "304372702125",
+            appId: "1:304372702125:web:e6094b469db32dadd65f24"
+        };
+        // Initialize Firebase
+        firebase.initializeApp(firebaseConfig);
+
+
+        //    -----------------------------Read Data----------------------------------------------------- 
+
+
+        var nameV, rollV, secV, genV;
+
+        function Ready() {
+            nameV = document.getElementById('namebox').value;
+            rollV = document.getElementById('rollbox').value;
+            secV = document.getElementById('secbox').value;
+            genV = document.getElementById('genbox').value
+
+        }
+
+
+        //    -----------------------------INSERT  Data-----------------------------------------------------
+        document.getElementById('insert').onclick = function() {
+
+            Ready();
+            firebase.database().ref('student/' + rollV).set({
+                NameOfStudent: nameV,
+                RollNo: rollV,
+                Sec: secV,
+                Gender: genV
+
+            })
+            alert("insert data");
+
+        }
+
+        //    -----------------------------SELECTION  Data-----------------------------------------------------
+
+        document.getElementById('select').onclick = function() {
+
+            Ready();
+            firebase.database().ref('student/' + rollV).on('value', function(snapshot) {
+                document.getElementById('namebox').value = snapshot.val().NameOfStudent;
+                document.getElementById('secbox').value = snapshot.val().Sec;
+                document.getElementById('genbox').value = snapshot.val().Gender;
+            })
+        }
+
+
+
+        //    -----------------------------Update  Data-----------------------------------------------------
+        document.getElementById('update').onclick = function() {
+
+            Ready();
+            firebase.database().ref('student/' + rollV).update({
+                NameOfStudent: nameV,
+                // RollNo: rollV,
+                Sec: secV,
+                Gender: genV
+            })
+
+            alert("update data");
+
+        }
+
+        document.getElementById('delete').onclick = function() {
+            Ready();
+            firebase.database().ref('student/' + rollV).remove().alert("delete data");
+            // alert("delete")
+        }
+    </script>
+
+</body>
+
+</html>
